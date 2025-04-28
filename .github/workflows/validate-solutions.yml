@@ -27,7 +27,7 @@ jobs:
         id: pytest
         continue-on-error: true
         run: |
-          pytest problems/
+          pytest problems/ --import-mode=importlib
 
       - name: Get changed files
         id: changed-files
