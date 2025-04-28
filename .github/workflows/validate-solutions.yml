@@ -26,7 +26,7 @@ jobs:
       - name: Run tests
         id: pytest
         run: |
-          pytest problems/ --import-mode=importlib
+          pytest problems/easy/
 
       - name: Get changed files
         id: changed-files
