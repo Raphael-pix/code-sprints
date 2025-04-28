@@ -1,5 +1,5 @@
 import pytest
-from sum_two_numbers import sum_two_numbers
+from easy.sum_two_numbers import sum_two_numbers
 
 def test_sum_two_numbers():
     assert sum_two_numbers(2, 3) == 5
