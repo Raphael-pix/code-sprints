@@ -24,30 +24,28 @@ jobs:
 
       - name: Run tests
         id: pytest
-        continue-on-error: true  # important: don't stop the job even if pytest fails
+        continue-on-error: true
         run: |
           pytest problems/
 
-      - name: Post comment if success
-        if: steps.pytest.outcome == 'success'
-        uses: actions/github-script@v7
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
         with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "🎉 All test cases passed! You have earned points! 🚀"
-            })
+          files: |
+            problems/**
 
-      - name: Post comment if failed
-        if: steps.pytest.outcome == 'failure'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: "❌ Some test cases failed. Please check your code and try again! 🔥"
-            })
+      - name: Determine Points
+        id: points
+        run: |
+          POINTS=0
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [[ "$file" == problems/easy/* ]]; then
+              POINTS=$((POINTS + 10))
+            elif [[ "$file" == problems/intermediate/* ]]; then
+              POINTS=$((POINTS + 20))
+            elif [[ "$file" == problems/hard/* ]]; then
+              POINTS=$((POINTS + 30))
+            fi
+          done
+          echo "POINTS=$POINTS" >> $GITHUB_ENV
