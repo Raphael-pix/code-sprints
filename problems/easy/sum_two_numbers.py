@@ -1,3 +1,3 @@
 def sum_two_numbers(a: int, b: int) -> int:
-    # run your code here
+    return a + b
     pass
