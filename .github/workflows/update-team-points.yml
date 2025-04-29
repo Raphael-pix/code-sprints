@@ -32,9 +32,9 @@ jobs:
       - name: Get commit author and changed files
         id: changes
         run: |
-          AUTHOR=$(git log -1 --pretty=format:'%an')
-          echo "author=$AUTHOR" >> $GITHUB_OUTPUT
-          git diff-tree --no-commit-id --name-only -r HEAD | grep '^problems/' > changed_files.txt
+         AUTHOR=$(git log -1 --pretty=format:'%an')
+         echo "author=$AUTHOR" >> $GITHUB_OUTPUT
+         git diff-tree --no-commit-id --name-only -r HEAD | grep '^problems/' || true > changed_files.txt
 
       - name: Determine Points
         id: points
