@@ -29,17 +29,18 @@ jobs:
         run: |
           pytest problems/
 
-      - name: Get commit author and changed files
-        id: changes
+      - name: Get commit author
+        id: author
         run: |
           AUTHOR=$(git log -1 --pretty=format:'%an')
           echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
-          git diff-tree --no-commit-id --name-only -r HEAD | grep '^problems/' || true > changed_files.txt
 
-          if [ ! -s changed_files.txt ]; then
-            echo "No problem files changed. Skipping points update."
-            exit 0
-          fi
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            problems/**
 
       - name: Determine Points
         id: points
@@ -48,7 +49,7 @@ jobs:
           echo "| Challenge | Points |" > new_points.md
           echo "|:----------|-------:|" >> new_points.md
 
-          while read file; do
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             CHALLENGE=$(basename "$file")
             if [[ "$file" == problems/easy/* ]]; then
               POINTS=10
@@ -61,7 +62,7 @@ jobs:
             fi
             TOTAL=$((TOTAL + POINTS))
             echo "| $CHALLENGE | $POINTS |" >> new_points.md
-          done < changed_files.txt
+          done
 
           echo "" >> new_points.md
           echo "| **Total** | **$TOTAL** |" >> new_points.md
