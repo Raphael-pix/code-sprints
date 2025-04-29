@@ -56,14 +56,14 @@ jobs:
         if: always()
         uses: actions/github-script@v6
         with:
-          script: |
-            const prNumber = ${{ github.event.pull_request.number }};
-            const testOutcome = ${{ steps.pytest.outcome }};
-            const testResults = testOutcome === 'success' ? '✅ All tests passed!' : '❌ Tests failed. See logs for details.';
-            const comment = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: testResults
-            };
-            github.rest.issues.createComment(comment);
+         script: |
+           const prNumber = ${{ github.event.pull_request.number }};
+           const testOutcome = "${{ steps.pytest.outcome }}";  # Correctly reference the outcome
+           const testResults = testOutcome === 'success' ? '✅ All tests passed!' : '❌ Tests failed. See logs for details.';
+           const comment = {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: prNumber,
+            body: testResults
+           };
+           github.rest.issues.createComment(comment);
