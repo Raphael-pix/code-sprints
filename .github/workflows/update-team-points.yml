@@ -33,8 +33,13 @@ jobs:
         id: changes
         run: |
           AUTHOR=$(git log -1 --pretty=format:'%an')
-          echo "author=$AUTHOR" >> $GITHUB_OUTPUT
-          git diff-tree --no-commit-id --name-only -r HEAD | grep '^problems/' > changed_files.txt
+          echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
+          git diff-tree --no-commit-id --name-only -r HEAD | grep '^problems/' || true > changed_files.txt
+
+          if [ ! -s changed_files.txt ]; then
+            echo "No problem files changed. Skipping points update."
+            exit 0
+          fi
 
       - name: Determine Points
         id: points
