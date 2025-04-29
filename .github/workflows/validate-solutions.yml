@@ -1,15 +1,13 @@
 name: Validate Solutions
 
 on:
-  pull_request_target:
+  pull_request:
     paths:
       - "problems/**"
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write # Needed to comment on PR
 
     steps:
       - name: Checkout PR code
@@ -29,9 +27,8 @@ jobs:
 
       - name: Run tests
         id: pytest
-        continue-on-error: true
         run: |
-          pytest problems/
+          pytest problems/easy/
 
       - name: Get changed files
         id: changed-files
@@ -55,26 +52,18 @@ jobs:
           done
           echo "POINTS=$POINTS" >> $GITHUB_ENV
 
-      - name: Comment on PR with points
-        if: steps.pytest.outcome == 'success'
-        uses: actions/github-script@v7
+      - name: Post test result as a PR comment
+        if: always()
+        uses: actions/github-script@v6
         with:
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.payload.pull_request.number,
+            const prNumber = ${{ github.event.pull_request.number }};
+            const testOutcome = ${{ steps.pytest.outcome }};
+            const testResults = testOutcome === 'success' ? '✅ All tests passed!' : '❌ Tests failed. See logs for details.';
+            const comment = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `✅ All tests passed!\n🏅 **Points awarded:** ${process.env.POINTS}`
-            })
-
-      - name: Comment on PR with failure
-        if: steps.pytest.outcome != 'success'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.payload.pull_request.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `❌ Some tests failed. Please fix them and push again.`
-            })
+              issue_number: prNumber,
+              body: testResults
+            };
+            github.rest.issues.createComment(comment);

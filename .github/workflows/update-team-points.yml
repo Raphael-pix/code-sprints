@@ -1,0 +1,82 @@
+name: Update Team Points
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "problems/**"
+
+jobs:
+  update-points:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install test dependencies
+        run: |
+          pip install pytest
+
+      - name: Run tests
+        id: test-status
+        run: |
+          pytest problems/
+      
+      - name: Get commit author and changed files
+        id: changes
+        run: |
+          AUTHOR=$(git log -1 --pretty=format:'%an')
+          echo "author=$AUTHOR" >> $GITHUB_OUTPUT
+          git diff-tree --no-commit-id --name-only -r HEAD | grep '^problems/' > changed_files.txt
+
+      - name: Determine Points
+        id: points
+        run: |
+          TOTAL=0
+          echo "| Challenge | Points |" > new_points.md
+          echo "|:----------|-------:|" >> new_points.md
+          while read file; do
+            CHALLENGE=$(basename "$file")
+            if [[ "$file" == problems/easy/* ]]; then
+              POINTS=10
+            elif [[ "$file" == problems/intermediate/* ]]; then
+              POINTS=20
+            elif [[ "$file" == problems/hard/* ]]; then
+              POINTS=30
+            else
+              POINTS=0
+            fi
+            TOTAL=$((TOTAL + POINTS))
+            echo "| $CHALLENGE | $POINTS |" >> new_points.md
+          done < changed_files.txt
+          echo "" >> new_points.md
+          echo "| **Total** | **$TOTAL** |" >> new_points.md
+          echo "TOTAL_POINTS=$TOTAL" >> $GITHUB_ENV
+
+      - name: Append to team_points.md
+        run: |
+          AUTHOR="${{ steps.changes.outputs.author }}"
+          DATE=$(date +'%Y-%m-%d %H:%M:%S')
+          {
+            echo "### $AUTHOR - $DATE"
+            cat new_points.md
+            echo ""
+          } >> team_points.md
+
+      - name: Commit team points update
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
+          git add team_points.md
+          git commit -m "Update team points for ${{ steps.changes.outputs.author }}"
+          git push
