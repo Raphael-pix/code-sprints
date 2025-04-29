@@ -36,6 +36,7 @@ jobs:
         if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
         uses: actions/setup-java@v4
         with:
+          distribution: 'temurin'
           java-version: "17"
 
       - name: Install test dependencies (Python)
