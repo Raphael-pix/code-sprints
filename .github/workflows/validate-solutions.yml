@@ -1,9 +1,11 @@
 name: Validate Solutions
 
 on:
-  pull_request:
-    paths:
-      - "problems/**"
+  workflow_dispatch:
+  # pull_request:
+  #   paths:
+  #     - "problems/**"
+  
 
 jobs:
   test:

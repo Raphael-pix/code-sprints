@@ -1,11 +1,12 @@
 name: Update Team Points
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "problems/**"
+    workflow_dispatch:
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - "problems/**"
 
 jobs:
   update-points:

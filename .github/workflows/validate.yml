@@ -1,0 +1,73 @@
+name: Validate Multi-language Solutions
+
+on:
+  pull_request:
+    paths:
+      - "problems/**"
+
+jobs:
+  detect-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: [python, cpp, c, java, js]
+
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+        with:
+          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+
+      - name: Set up Python (for Python tests)
+        if: matrix.language == 'python'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Set up Node.js (for JavaScript tests)
+        if: matrix.language == 'js'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Set up Java (for Java tests)
+        if: matrix.language == 'java'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+
+      - name: Install test dependencies (Python)
+        if: matrix.language == 'python'
+        run: |
+          pip install pytest
+
+      - name: Run Python Tests
+        if: matrix.language == 'python'
+        run: |
+          find problems -type d -name '__tests__' -exec bash -c 'for d; do pytest "$d"; done' _ {} +
+
+      - name: Run JavaScript Tests
+        if: matrix.language == 'js'
+        run: |
+          find problems -type f -name '*.test.js' -exec node {} +
+
+      - name: Run Java Tests
+        if: matrix.language == 'java'
+        run: |
+          find problems -type f -name '*.java' | while read file; do
+            javac "$file" && java "${file%.java}"
+          done
+
+      - name: Run C++ Tests
+        if: matrix.language == 'cpp'
+        run: |
+          find problems -type f -name '*.cpp' | while read file; do
+            g++ "$file" -o test && ./test
+          done
+
+      - name: Run C Tests
+        if: matrix.language == 'c'
+        run: |
+          find problems -type f -name '*.c' | while read file; do
+            gcc "$file" -o test && ./test
+          done
