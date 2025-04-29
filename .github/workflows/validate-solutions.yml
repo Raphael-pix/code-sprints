@@ -55,15 +55,20 @@ jobs:
       - name: Post test result as a PR comment
         if: always()
         uses: actions/github-script@v6
+        env:
+         TEST_OUTCOME: ${{ steps.pytest.outcome }}
         with:
-          script: |
-            const prNumber = ${{ github.event.pull_request.number }};
-            const testOutcome = ${{ steps.pytest.outcome }};
-            const testResults = testOutcome === 'success' ? '✅ All tests passed!' : '❌ Tests failed. See logs for details.';
-            const comment = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: testResults
-            };
-            github.rest.issues.createComment(comment);
+         script: |
+          const prNumber = context.payload.pull_request.number;
+          const outcome = process.env.TEST_OUTCOME;
+          const testResults = outcome === 'success'
+           ? '✅ All tests passed!'
+           : '❌ Some tests failed. Please check the logs.';
+      
+          await github.rest.issues.createComment({
+           owner: context.repo.owner,
+           repo: context.repo.repo,
+           issue_number: prNumber,
+           body: testResults
+          });
+
