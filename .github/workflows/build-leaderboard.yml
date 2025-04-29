@@ -1,0 +1,58 @@
+name: Build Leaderboard
+
+on:
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fetch PR Comments
+        uses: actions/github-script@v7
+        id: fetch-comments
+        with:
+          script: |
+            const allComments = await github.paginate(
+              github.rest.issues.listCommentsForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100,
+              }
+            );
+
+            const pointsMap = {};
+
+            for (const comment of allComments) {
+              const author = comment.user.login;
+              const match = comment.body.match(/Points awarded:\s*(\d+)/i);
+              if (match) {
+                const points = parseInt(match[1], 10);
+                pointsMap[author] = (pointsMap[author] || 0) + points;
+              }
+            }
+
+            const sorted = Object.entries(pointsMap)
+              .sort(([, a], [, b]) => b - a);
+
+            let leaderboard = "| Participant | Points |\n|:------------|-------:|\n";
+            for (const [user, points] of sorted) {
+              leaderboard += `| ${user} | ${points} |\n`;
+            }
+
+            require('fs').writeFileSync('leaderboard.md', leaderboard);
+            console.log("🏆 Leaderboard generated.");
+
+      - name: Commit Leaderboard
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add leaderboard.md
+          git commit -m "Build leaderboard"
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
