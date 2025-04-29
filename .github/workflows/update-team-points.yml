@@ -28,13 +28,18 @@ jobs:
         id: test-status
         run: |
           pytest problems/
-      
+
       - name: Get commit author and changed files
         id: changes
         run: |
           AUTHOR=$(git log -1 --pretty=format:'%an')
-          echo "author=$AUTHOR" >> $GITHUB_OUTPUT
-          git diff-tree --no-commit-id --name-only -r HEAD | grep '^problems/' > changed_files.txt
+          echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
+          git diff-tree --no-commit-id --name-only -r HEAD | grep '^problems/' || true > changed_files.txt
+
+          if [ ! -s changed_files.txt ]; then
+            echo "No problem files changed. Skipping points update."
+            exit 0
+          fi
 
       - name: Determine Points
         id: points
@@ -42,6 +47,7 @@ jobs:
           TOTAL=0
           echo "| Challenge | Points |" > new_points.md
           echo "|:----------|-------:|" >> new_points.md
+
           while read file; do
             CHALLENGE=$(basename "$file")
             if [[ "$file" == problems/easy/* ]]; then
@@ -56,13 +62,13 @@ jobs:
             TOTAL=$((TOTAL + POINTS))
             echo "| $CHALLENGE | $POINTS |" >> new_points.md
           done < changed_files.txt
+
           echo "" >> new_points.md
           echo "| **Total** | **$TOTAL** |" >> new_points.md
           echo "TOTAL_POINTS=$TOTAL" >> $GITHUB_ENV
 
       - name: Append to team_points.md
         run: |
-          AUTHOR="${{ steps.changes.outputs.author }}"
           DATE=$(date +'%Y-%m-%d %H:%M:%S')
           {
             echo "### $AUTHOR - $DATE"
@@ -78,5 +84,5 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
           git add team_points.md
-          git commit -m "Update team points for ${{ steps.changes.outputs.author }}"
+          git commit -m "Update team points for $AUTHOR"
           git push
