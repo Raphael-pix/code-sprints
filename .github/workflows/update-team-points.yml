@@ -15,12 +15,19 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v4
 
-      - name: Read points from file
+      - name: Download points artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: points-file
+          path: .
+
+      - name: Read points and challenge name from file
         id: read-points
         run: |
           if [ -f .points ]; then
-            POINTS=$(cat .points)
+            source .points
           else
+            CHALLENGE_NAME="Unknown"
             POINTS=0
           fi
           AUTHOR=$(git log -1 --pretty=format:'%an')
@@ -28,15 +35,17 @@ jobs:
           echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
           echo "DATE=$DATE" >> $GITHUB_ENV
           echo "POINTS=$POINTS" >> $GITHUB_ENV
-      
+          echo "CHALLENGE_NAME=$CHALLENGE_NAME" >> $GITHUB_ENV
+
       - name: Append to team_points.md
         run: |
           {
             echo "### $AUTHOR - $DATE"
+            echo "| **Challenge** | **$CHALLENGE_NAME** |"
             echo "| **Total Points** | **$POINTS** |"
             echo ""
           } >> team_points.md
-      
+
       - name: Commit team points update
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
