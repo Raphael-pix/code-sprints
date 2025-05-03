@@ -164,15 +164,14 @@ jobs:
         run: |
           echo "POINTS" > .points
      
-      - name: Commit points file
-        env:
-         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-              git config --global user.name "github-actions[bot]"
-              git config --global user.email "github-actions[bot]@users.noreply.github.com"
-              git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
-              git add .points
-              git commit -m "Save POINTS=$POINTS" || echo "No changes to commit"
-              git push || echo "Nothing to push
-            
+          - name: Commit points file
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: |
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
+            git add .points
+            git commit -m "Save POINTS=${POINTS}" || echo "No changes to commit"
+            git push || echo "Nothing to push"
         
