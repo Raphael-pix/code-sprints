@@ -20,48 +20,75 @@ jobs:
           files: |
             problems/**
 
-      - name: Check changed files
-        run: echo "${{ steps.changed-files.outputs.all_changed_files }}"
+      - name: Get changed Python files
+        id: python-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.py"
+
+      - name: Get changed JavaScript files
+        id: js-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.js"
+
+      - name: Get changed Java files
+        id: java-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.java"
+
+      - name: Get changed C++ files
+        id: cpp-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.cpp"
+
+      - name: Get changed C files
+        id: c-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.c"
 
       - name: Set up Python (for Python tests)
-        if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
+        if: steps.python-changes.outputs.any_changed == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Set up Node.js (for JavaScript tests)
-        if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Set up Java (for Java tests)
-        if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: "17"
-
       - name: Install test dependencies (Python)
-        if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
+        if: steps.python-changes.outputs.any_changed == 'true'
         run: |
           python -m pip install --upgrade pip
           pip install pytest
 
       - name: Run Python Tests
-        if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
+        if: steps.python-changes.outputs.any_changed == 'true'
         id: test_python
         run: |
           find problems -type d -name '__tests__' -exec bash -c 'for d; do pytest "$d"; done' _ {} +
 
+      - name: Set up Node.js (for JavaScript tests)
+        if: steps.js-changes.outputs.any_changed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
       - name: Run JavaScript Tests
-        if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
+        if: steps.js-changes.outputs.any_changed == 'true'
         id: test_js
         run: |
           find problems -type f -name '*.test.js' -exec node {} +
 
+      - name: Set up Java (for Java tests)
+        if: steps.java-changes.outputs.any_changed == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
       - name: Run Java Tests
-        if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
+        if: steps.java-changes.outputs.any_changed == 'true'
         id: test_java
         run: |
           find problems -type f -name '*.java' | while read file; do
@@ -69,7 +96,7 @@ jobs:
           done
 
       - name: Run C++ Tests
-        if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
+        if: steps.cpp-changes.outputs.any_changed == 'true'
         id: test_cpp
         run: |
           find problems -type f -name '*.cpp' | while read file; do
@@ -77,7 +104,7 @@ jobs:
           done
 
       - name: Run C Tests
-        if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
+        if: steps.c-changes.outputs.any_changed == 'true'
         id: test_c
         run: |
           find problems -type f -name '*.c' | while read file; do
