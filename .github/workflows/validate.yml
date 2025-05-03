@@ -126,10 +126,10 @@ jobs:
           done
           echo "POINTS=$POINTS" >> $GITHUB_ENV
 
-          - name: Post test result as a PR comment
-          if: always()
-          uses: actions/github-script@v6
-          with:
+      - name: Post test result as a PR comment
+        if: always()
+        uses: actions/github-script@v6
+        with:
             script: |
               const prNumber = context.payload.pull_request.number;
         
