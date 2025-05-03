@@ -1,5 +1,23 @@
 function removeElement(nums, val) {
-    // Implement your solution
+    let count = 0;
+    let current = 0;
+    let end = nums.length - 1;
+
+    while(current <= end){
+        if(nums[end] === val){
+            count++;
+            end--;
+            continue;
+        }
+        if(nums[current] === val){
+            nums[current] = nums[end];
+            nums[end] = val;
+            end--;
+            count++;
+        }
+        current++;
+    }
+    return nums.length - count;
 }
 
 // Test case
