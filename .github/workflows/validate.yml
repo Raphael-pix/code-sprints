@@ -180,6 +180,7 @@ jobs:
         run: |
               git config --global user.name "github-actions[bot]"
               git config --global user.email "github-actions[bot]@users.noreply.github.com"
+              git checkout main
               git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
               git add team_points.md
               git commit -m "Update team points for $AUTHOR (POINTS=$POINTS)" || echo "No changes to commit"
