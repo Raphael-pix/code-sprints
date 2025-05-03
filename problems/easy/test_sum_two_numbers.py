@@ -1,11 +1,9 @@
 import sys
 import os
-import pytest
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from sum_two import sum_two  
-
+from sum_two import sum_two  # or the actual function name
 
 def test_sum_two_numbers():
     assert sum_two_numbers(2, 3) == 5
