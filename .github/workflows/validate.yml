@@ -162,7 +162,7 @@ jobs:
       
       - name: Write points to file
         run: |
-          echo "$POINTS" > .points
+         echo "${{ env.POINTS }}" > .points
      
           - name: Commit points file
           env:
