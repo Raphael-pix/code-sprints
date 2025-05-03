@@ -160,9 +160,9 @@ jobs:
                 body: `### 🧪 Test Summary\n${comment}\n\n🏅 **Total Points Earned:** ${points}`
               });
       
-              - name: Write points to file
-              run: |
-                echo "${{ env.POINTS }}" > .points
+      - name: Write points to file
+        run: |
+          echo "POINTS" > .points
      
       - name: Commit points file
         env:
@@ -172,7 +172,7 @@ jobs:
               git config --global user.email "github-actions[bot]@users.noreply.github.com"
               git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
               git add .points
-              git commit -m "Save POINTS=${{ env.POINTS }}"
-              git push
+              git commit -m "Save POINTS=$POINTS" || echo "No changes to commit"
+              git push || echo "Nothing to push
             
         
