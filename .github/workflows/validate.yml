@@ -160,14 +160,27 @@ jobs:
               body: `### 🧪 Test Summary\n${comment}\n\n🏅 **Total Points Earned:** ${points}`
             });
 
-      - name: Write points and challenge name to file
+      - name: Append to team_points.md
         run: |
-          echo "CHALLENGE_NAME=${{ github.event.pull_request.title }}" > .points
-          echo "POINTS=$POINTS" >> .points
-          echo "AUTHOR=${{ github.event.pull_request.user.login }}" >> .points
-
-      - name: Upload points artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: points-file
-          path: .points
+              AUTHOR=$(git log -1 --pretty=format:'%an')
+              DATE=$(date +'%Y-%m-%d %H:%M:%S')
+              CHALLENGE_NAME="${{ github.event.pull_request.title }}"
+              
+              # Append points and challenge to the markdown file
+              {
+                echo "### $AUTHOR - $DATE"
+                echo "| **Challenge** | **$CHALLENGE_NAME** |"
+                echo "| **Total Points** | **$POINTS** |"
+                echo ""
+              } >> team_points.md
+    
+      - name: Commit team points update
+        env:
+          G/H_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+              git config --global user.name "github-actions[bot]"
+              git config --global user.email "github-actions[bot]@users.noreply.github.com"
+              git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
+              git add team_points.md
+              git commit -m "Update team points for $AUTHOR (POINTS=$POINTS)" || echo "No changes to commit"
+              git push || echo "Nothing to push"
