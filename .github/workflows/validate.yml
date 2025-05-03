@@ -20,6 +20,9 @@ jobs:
           files: |
             problems/**
 
+      - name: Check changed files
+        run: echo "${{ steps.changed-files.outputs.all_changed_files }}"
+
       - name: Set up Python (for Python tests)
         if: contains(steps.changed-files.outputs.all_changed_files, 'problems/easy/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/intermediate/') || contains(steps.changed-files.outputs.all_changed_files, 'problems/hard/')
         uses: actions/setup-python@v5
