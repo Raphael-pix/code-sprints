@@ -1,11 +1,10 @@
 name: Update Team Points
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "problems/**"
+  workflow_run:
+    workflows: ["Validate Multi-language Solutions"]
+    types:
+      - completed
 
 jobs:
   update-points:
@@ -15,22 +14,24 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v4
 
-      - name: Download points artifact
+      - name: Download points artifact from upstream workflow
         uses: actions/download-artifact@v4
         with:
           name: points-file
+          run-id: ${{ github.event.workflow_run.id }}
           path: .
 
-      - name: Read points and challenge name from file
+      - name: Read points, challenge name, and author from file
         id: read-points
         run: |
           if [ -f .points ]; then
             source .points
           else
+            echo "No .points file found; setting defaults."
             CHALLENGE_NAME="Unknown"
             POINTS=0
+            AUTHOR="Unknown"
           fi
-          AUTHOR=$(git log -1 --pretty=format:'%an')
           DATE=$(date +'%Y-%m-%d %H:%M:%S')
           echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
           echo "DATE=$DATE" >> $GITHUB_ENV
@@ -60,9 +61,7 @@ jobs:
       - name: Clean up points file
         run: |
           if [ -f .points ]; then
-            git rm .points
-            git commit -m "Remove .points file after processing" || echo "No changes to commit"
-            git push || echo "Nothing to push"
+            rm .points
           else
             echo "No .points file to remove"
           fi

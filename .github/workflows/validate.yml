@@ -130,44 +130,44 @@ jobs:
         if: always()
         uses: actions/github-script@v6
         with:
-            script: |
-              const prNumber = context.payload.pull_request.number;
-        
-              const results = {
-                Python: '${{ steps.test_python.outcome || 'skipped' }}',
-                JavaScript: '${{ steps.test_js.outcome || 'skipped' }}',
-                Java: '${{ steps.test_java.outcome || 'skipped' }}',
-                'C++': '${{ steps.test_cpp.outcome || 'skipped' }}',
-                C: '${{ steps.test_c.outcome || 'skipped' }}'
-              };
-        
-              const symbols = {
-                success: '✅',
-                failure: '❌',
-                skipped: '⚪'
-              };
-        
-              const comment = Object.entries(results)
-                .map(([lang, result]) => `${symbols[result] || '❔'} ${lang} tests: **${result.toUpperCase()}**`)
-                .join('\n');
-        
-              const points = process.env.POINTS || '0';
-        
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: prNumber,
-                body: `### 🧪 Test Summary\n${comment}\n\n🏅 **Total Points Earned:** ${points}`
-              });
-      
+          script: |
+            const prNumber = context.payload.pull_request.number;
+
+            const results = {
+              Python: '${{ steps.test_python.outcome || 'skipped' }}',
+              JavaScript: '${{ steps.test_js.outcome || 'skipped' }}',
+              Java: '${{ steps.test_java.outcome || 'skipped' }}',
+              'C++': '${{ steps.test_cpp.outcome || 'skipped' }}',
+              C: '${{ steps.test_c.outcome || 'skipped' }}'
+            };
+
+            const symbols = {
+              success: '✅',
+              failure: '❌',
+              skipped: '⚪'
+            };
+
+            const comment = Object.entries(results)
+              .map(([lang, result]) => `${symbols[result] || '❔'} ${lang} tests: **${result.toUpperCase()}**`)
+              .join('\n');
+
+            const points = process.env.POINTS || '0';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: `### 🧪 Test Summary\n${comment}\n\n🏅 **Total Points Earned:** ${points}`
+            });
+
       - name: Write points and challenge name to file
         run: |
-            echo "CHALLENGE_NAME=${{ github.event.pull_request.title }}" > .points
-            echo "POINTS=$POINTS" >> .points
-      
+          echo "CHALLENGE_NAME=${{ github.event.pull_request.title }}" > .points
+          echo "POINTS=$POINTS" >> .points
+          echo "AUTHOR=${{ github.event.pull_request.user.login }}" >> .points
+
       - name: Upload points artifact
         uses: actions/upload-artifact@v4
         with:
-            name: points-file
-            path: .points
-        
+          name: points-file
+          path: .points
