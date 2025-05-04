@@ -6,8 +6,8 @@ DNA is a nucleic acid present in the bodies of living things. Each piece of DNA 
 
 Given the following:
 
-- An array of beneficial gene strings,**genes = [*g<sub>0</sub>, g<sub>1</sub>,...,g<sub>n-1</sub>*]**. Note that these gene sequences are not guaranteed to be distinct.
-- An array of gene health values,**health = [*h<sub>0</sub>, h<sub>1</sub>,...,h<sub>n-1</sub>*]**, where each *h<sub>i</sub>*  is the health value for gene *g<sub>i</sub>*.
+- An array of beneficial gene strings, **genes = [*g<sub>0</sub>, g<sub>1</sub>,...,g<sub>n-1</sub>*]**. Note that these gene sequences are not guaranteed to be distinct.
+- An array of gene health values, **health = [*h<sub>0</sub>, h<sub>1</sub>,...,h<sub>n-1</sub>*]**, where each *h<sub>i</sub>*  is the health value for gene *g<sub>i</sub>*.
 - A set of *s* DNA strands where the definition of each strand has three components,*start*, *end*, and *d*, where string *d* is a DNA for which genes *g<sub>start</sub>,...,g<sub>end</sub>*  are healthy.
 
 
@@ -39,13 +39,13 @@ Print two space-separated integers describing the respective total health of the
 
 **Sample Input**
 `
-6
-a b c aa d b
-1 2 3 4 5 6
-3
-1 5 caaab
-0 4 xyz
-2 4 bcdybc
+- 6
+- a b c aa d b
+- 1 2 3 4 5 6
+- 3
+- 1 5 caaab
+- 0 4 xyz
+- 2 4 bcdybc
 `
 
 **Sample Output**
