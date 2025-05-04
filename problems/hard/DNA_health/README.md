@@ -38,7 +38,7 @@ Print two space-separated integers describing the respective total health of the
 ### Example
 
 **Sample Input**
-`
+
 - 6
 - a b c aa d b
 - 1 2 3 4 5 6
@@ -46,7 +46,6 @@ Print two space-separated integers describing the respective total health of the
 - 1 5 caaab
 - 0 4 xyz
 - 2 4 bcdybc
-`
 
 **Sample Output**
 `
