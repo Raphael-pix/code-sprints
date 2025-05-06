@@ -9,7 +9,7 @@ Given a grid of size *n × m*, each cell in the grid is either *good* or *bad*.
 A valid plus is defined here as the crossing of two segments (horizontal and vertical) of equal lengths. These lengths must be odd, and the middle cell of its horizontal segment must cross the middle cell of its vertical segment.
 
 In the diagram below, the blue pluses are valid and the orange ones are not valid.
-![alt text](image_url)
+![pulses](https://res.cloudinary.com/dzjujqvly/image/upload/v1746529605/1445015866-5e338e8b70-pluseses_rkrqph.png)
 
 ### Task
 
