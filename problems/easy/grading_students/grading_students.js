@@ -5,8 +5,16 @@
  */
 
 function gradingStudents(grades) {
-    // Write your code here
-    return grades;
+    return grades.map(grade => {
+        if (grade < 38) {
+            return grade; // no rounding if failing anyway
+        }
+        const nextMultipleOf5 = Math.ceil(grade / 5) * 5;
+        if (nextMultipleOf5 - grade < 3) {
+            return nextMultipleOf5; // round up
+        }
+        return grade; // no rounding
+    });
 }
 
 module.exports = { gradingStudents };
