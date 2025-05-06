@@ -10,6 +10,18 @@
 
 int* gradingStudents(int grades[], int grades_count) {
     int* result = (int*)malloc(sizeof(int) * grades_count);
-    //  Write your code here
+    for (int i = 0; i < grades_count; i++) {
+        int grade = grades[i];
+        if (grade < 38) {
+            result[i] = grade;
+        } else {
+            int nextMultipleOf5 = ((grade / 5) + 1) * 5;
+            if (nextMultipleOf5 - grade < 3) {
+                result[i] = nextMultipleOf5;
+            } else {
+                result[i] = grade;
+            }
+        }
+    }
     return result;
 }
