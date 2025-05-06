@@ -39,11 +39,12 @@ For **60%** of the maximum score:
 
 **Input:**
 `
-ranked[7]= [100, 100, 50, 40, 40, 20, 10]
+ranked = [100, 100, 50, 40, 40, 20, 10]
 `
 `
-player[4] = [5, 25, 50, 120]
+player = [5, 25, 50, 120]
 `
+\n
 **Output**
 `
 rank[m] = [6, 4, 2, 1]
