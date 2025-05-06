@@ -2,7 +2,7 @@
 
 ## Problem Statement
 
-HackerLand University has the following grading policy:
+Kimathi University has the following grading policy:
 
 - Every student receives a *grade* in the inclusive range from *0* to *100* .
 - Any *grade* less than *40* is a failing grade.
@@ -18,10 +18,11 @@ Sam is a professor at the university and likes to round each student's *grade* a
 
 The function gradingStudents has the following parameter(s):
 
-*int grades[n]* : the grades before rounding
-Returns
+- *int grades[n]* : the grades before rounding.
 
-*int[n]* : the grades after rounding
+Returns:
+
+- *int[n]* : the grades after rounding
 
 ### Example
 
