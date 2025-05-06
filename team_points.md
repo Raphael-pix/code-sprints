@@ -6,3 +6,7 @@
 | **Challenge** | **Update remove_element.js** |
 | **Total Points** | **20** |
 
+### Raphael Kaira - 2025-05-06 18:06:46
+| **Challenge** | **Update grading_students.js** |
+| **Total Points** | **10** |
+
