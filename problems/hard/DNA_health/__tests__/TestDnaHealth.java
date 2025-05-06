@@ -1,8 +1,8 @@
 package problems.hard.DNA_health.__tests__;
 
-import problems.hard.DNA_health.dna_health;
+import problems.hard.DNA_health.DnaHealth;
 
-public class test_dna_health {
+public class TestDnaHealth {
     public static void main(String[] args) {
         int n = 6;
         String[] genes = {"a", "b", "c", "aa", "d", "b"};
@@ -15,7 +15,7 @@ public class test_dna_health {
         };
         String[] strandStrings = {"caaab", "xyz", "bcdybc"};
 
-        int[] result = dna_health.computeDnaHealth(n, genes, health, strands, strandStrings);
+        int[] result = DnaHealth.computeDnaHealth(n, genes, health, strands, strandStrings);
 
         if (result[0] != 0 || result[1] != 19) {
             throw new AssertionError("❌ Test failed: Expected [0, 19], got [" + result[0] + ", " + result[1] + "]");

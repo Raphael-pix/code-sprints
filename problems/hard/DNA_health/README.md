@@ -51,3 +51,14 @@ Print two space-separated integers describing the respective total health of the
 `
 0 19
 `
+
+### Where to write your code
+
+Each language has a starter file:
+- `dna_health.py`
+- `dna_health.js`
+- `dna_health.c`
+- `dna_health.cpp`
+- `DnaHealth.java`
+
+Open the file and complete the `computeDnaHealth` function.

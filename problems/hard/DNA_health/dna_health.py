@@ -1,3 +1,3 @@
-def compute_dna_health(n, genes, health, strands):
+def computeDnaHealth(n, genes, health, strands):
     # Write your code here
     pass

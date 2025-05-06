@@ -1,4 +1,4 @@
-#include "../dna_health.h"
+#include "../dna_health.cpp"
 #include <iostream>
 #include <cassert>
 

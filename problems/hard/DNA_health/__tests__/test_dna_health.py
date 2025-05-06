@@ -3,7 +3,7 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from dna_health import compute_dna_health
+from dna_health import computeDnaHealth
 
 def test_dna_health():
     n = 6
@@ -14,7 +14,7 @@ def test_dna_health():
         (0, 4, 'xyz'),
         (2, 4, 'bcdybc')
     ]
-    result = compute_dna_health(n, genes, health, strands)
+    result = computeDnaHealth(n, genes, health, strands)
     assert result == (0, 19), f"Expected (0, 19), got {result}"
 
 if __name__ == "__main__":
