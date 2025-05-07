@@ -98,3 +98,7 @@
 | **Challenge** | **Update sum_two_numbers.py** |
 | **Total Points** | **10** |
 
+### Raphael Kaira - 2025-05-07 18:33:01
+| **Challenge** | **Update ema_supercomputer.c** |
+| **Total Points** | **20** |
+
