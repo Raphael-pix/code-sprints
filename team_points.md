@@ -150,3 +150,7 @@
 | **Challenge** | **Update MorganString.java** |
 | **Total Points** | **30** |
 
+### Raphael Kaira - 2025-05-07 20:33:21
+| **Challenge** | **Update build_a_string.py** |
+| **Total Points** | **30** |
+
