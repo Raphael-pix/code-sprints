@@ -34,3 +34,7 @@
 | **Challenge** | **Update angry_professor.js** |
 | **Total Points** | **10** |
 
+### Raphael Kaira - 2025-05-07 11:14:48
+| **Challenge** | **Update angry_professor.cpp** |
+| **Total Points** | **10** |
+
