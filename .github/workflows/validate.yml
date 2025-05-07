@@ -1,4 +1,4 @@
-name: Validate Multi-language Solutions
+name: Validate Solutions
 
 on:
   pull_request:
@@ -91,24 +91,60 @@ jobs:
         if: steps.java-changes.outputs.any_changed == 'true'
         id: test_java
         run: |
-          find problems -type f -name '*.java' | while read file; do
-            javac "$file" && java "${file%.java}"
+          for file in ${{ steps.java-changes.outputs.all_changed_files }}; do
+            dir=$(dirname "$file")
+            test_dir="$dir/__tests__"
+            if [ -d "$test_dir" ]; then
+              echo "Found test directory: $test_dir"
+              for test_file in "$test_dir"/Test*.java; do
+                if [ -f "$test_file" ]; then
+                  echo "Running test: $test_file"
+                  javac "$test_file" && java -cp "$test_dir" "$(basename "$test_file" .java)"
+                fi
+              done
+            else
+              echo "⚠️ No __tests__ directory found in $dir"
+            fi
           done
 
       - name: Run C++ Tests
         if: steps.cpp-changes.outputs.any_changed == 'true'
         id: test_cpp
         run: |
-          find problems -type f -name '*.cpp' | while read file; do
-            g++ "$file" -o test && ./test
-          done
+            for file in ${{ steps.cpp-changes.outputs.all_changed_files }}; do
+              dir=$(dirname "$file")
+              test_dir="$dir/__tests__"
+              if [ -d "$test_dir" ]; then
+                echo "Found test directory: $test_dir"
+                for test_file in "$test_dir"/*.cpp; do
+                  if [ -f "$test_file" ]; then
+                    echo "Running test: $test_file"
+                    g++ "$test_file" -o test && ./test
+                  fi
+                done
+              else
+                echo "⚠️ No __tests__ directory found in $dir"
+                fi
+            done
 
       - name: Run C Tests
         if: steps.c-changes.outputs.any_changed == 'true'
         id: test_c
         run: |
-          find problems -type f -name '*.c' | while read file; do
-            gcc "$file" -o test && ./test
+          for file in ${{ steps.c-changes.outputs.all_changed_files }}; do
+            dir=$(dirname "$file")
+            test_dir="$dir/__tests__"
+            if [ -d "$test_dir" ]; then
+              echo "Found test directory: $test_dir"
+              for test_file in "$test_dir"/*.c; do
+                if [ -f "$test_file" ]; then
+                  echo "Running test: $test_file"
+                  gcc "$test_file" -o test && ./test
+                fi
+              done
+            else
+              echo "⚠️ No __tests__ directory found in $dir"
+            fi
           done
 
       - name: Determine Points
