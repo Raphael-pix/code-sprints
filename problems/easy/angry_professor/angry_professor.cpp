@@ -10,6 +10,11 @@ using namespace std;
  */
 
 string angryProfessor(int k, vector<int> a) {
-    // Write your code here
-    return "YES";
+     int onTime = 0;
+    for (int time : a) {
+        if (time <= 0) {
+            onTime++;
+        }
+    }
+    return (onTime < k) ? "YES" : "NO";
 }
