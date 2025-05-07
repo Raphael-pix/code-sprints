@@ -6,7 +6,16 @@
  * @return {string} The minimal string
  */
 function morganAndString(a, b) {
-    // Write your code here
+    let result = '';
+    let i = 0, j = 0;
+    while (i < a.length && j < b.length) {
+        if (a.substring(i) <= b.substring(j)) {
+            result += a[i++];
+        } else {
+            result += b[j++];
+        }
+    }
+    return result + a.substring(i) + b.substring(j);
 }
 
 module.exports = morganAndString;
