@@ -2,6 +2,13 @@
 #include <string>
 using namespace std;
 
+/**
+ * Determines if it is possible to organize containers so that each contains balls of only one type.
+ *
+ * @param container A 2D vector where container[i][j] is the number of balls of type j in container i
+ * @return "Possible" if reorganization is possible, otherwise "Impossible"
+ */
+
 string organizingContainers(vector<vector<int>> container) {
     // Write your code here
     return "Impossible";
