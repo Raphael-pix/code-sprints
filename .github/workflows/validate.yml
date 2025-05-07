@@ -155,77 +155,36 @@ jobs:
             fi
           done
 
-      - name: Determine Points
-        id: points
-        run: |
-          POINTS=0
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            if [[ "$file" == problems/easy/* ]]; then
-              POINTS=$((POINTS + 10))
-            elif [[ "$file" == problems/intermediate/* ]]; then
-              POINTS=$((POINTS + 20))
-            elif [[ "$file" == problems/hard/* ]]; then
-              POINTS=$((POINTS + 30))
-            fi
-          done
-          echo "POINTS=$POINTS" >> $GITHUB_ENV
-
       - name: Post test result as a PR comment
         if: always()
         uses: actions/github-script@v6
         with:
           script: |
-            const prNumber = context.payload.pull_request.number;
-
-            const results = {
-              Python: '${{ steps.test_python.outcome || 'skipped' }}',
-              JavaScript: '${{ steps.test_js.outcome || 'skipped' }}',
-              Java: '${{ steps.test_java.outcome || 'skipped' }}',
-              'C++': '${{ steps.test_cpp.outcome || 'skipped' }}',
-              C: '${{ steps.test_c.outcome || 'skipped' }}'
-            };
-
-            const symbols = {
-              success: '✅',
-              failure: '❌',
-              skipped: '⚪'
-            };
-
-            const comment = Object.entries(results)
-              .map(([lang, result]) => `${symbols[result] || '❔'} ${lang} tests: **${result.toUpperCase()}**`)
-              .join('\n');
-
-            const points = process.env.POINTS || '0';
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: `### 🧪 Test Summary\n${comment}\n\n🏅 **Total Points Earned:** ${points}`
-            });
-
-      - name: Append to team_points.md
-        run: |
-          AUTHOR=$(git log -1 --pretty=format:'%an')
-          DATE=$(date +'%Y-%m-%d %H:%M:%S')
-          CHALLENGE_NAME="${{ github.event.pull_request.title }}"
-
-          # Append points and challenge to the markdown file
-          {
-            echo "### $AUTHOR - $DATE"
-            echo "| **Challenge** | **$CHALLENGE_NAME** |"
-            echo "| **Total Points** | **$POINTS** |"
-            echo ""
-          } >> team_points.md
-
-      - name: Commit team points update
-        env:
-          G/H_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout main
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
-          git add team_points.md
-          git commit -m "Update team points for $AUTHOR (POINTS=$POINTS)" || echo "No changes to commit"
-          git push || echo "Nothing to push"
+              const prNumber = context.payload.pull_request.number;
+        
+              // Collect outcomes of all the test steps
+              const results = [
+                '${{ steps.test_python.outcome || 'skipped' }}',
+                '${{ steps.test_js.outcome || 'skipped' }}',
+                '${{ steps.test_java.outcome || 'skipped' }}',
+                '${{ steps.test_cpp.outcome || 'skipped' }}',
+                '${{ steps.test_c.outcome || 'skipped' }}'
+              ];
+        
+              // Check if all tests passed (either success or skipped)
+              const allPassed = results.every(r => r === 'success' || r === 'skipped');
+        
+              let body;
+              if (allPassed) {
+                body = '✅ **All test cases have passed, please merge your code to get points.**';
+              } else {
+                body = '❌ **Some tests have failed, please try again.**';
+              }
+        
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                body
+              });
+        

@@ -1,40 +1,17 @@
-name: Update Team Points
+name: Validate Solutions
 
 on:
-    workflow_dispatch:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - "problems/**"
+  push:
+    branches:
+      - main
 
 jobs:
-  update-points:
+  detect-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main branch
+      - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
-      - name: Install test dependencies
-        run: |
-          pip install pytest
-
-      - name: Run tests
-        id: test-status
-        run: |
-          pytest problems/
-
-      - name: Get commit author
-        id: author
-        run: |
-          AUTHOR=$(git log -1 --pretty=format:'%an')
-          echo "AUTHOR=$AUTHOR" >> $GITHUB_ENV
 
       - name: Get changed files
         id: changed-files
@@ -43,48 +20,212 @@ jobs:
           files: |
             problems/**
 
+      - name: Get changed Python files
+        id: python-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.py"
+
+      - name: Get changed JavaScript files
+        id: js-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.js"
+
+      - name: Get changed Java files
+        id: java-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.java"
+
+      - name: Get changed C++ files
+        id: cpp-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.cpp"
+
+      - name: Get changed C files
+        id: c-changes
+        uses: tj-actions/changed-files@v44
+        with:
+          files: "**/*.c"
+
+      - name: Set up Python (for Python tests)
+        if: steps.python-changes.outputs.any_changed == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install test dependencies (Python)
+        if: steps.python-changes.outputs.any_changed == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      - name: Run Python Tests
+        if: steps.python-changes.outputs.any_changed == 'true'
+        id: test_python
+        run: |
+          find problems -type d -name '__tests__' -exec bash -c 'for d; do pytest "$d"; done' _ {} +
+
+      - name: Set up Node.js (for JavaScript tests)
+        if: steps.js-changes.outputs.any_changed == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run JavaScript Tests
+        if: steps.js-changes.outputs.any_changed == 'true'
+        id: test_js
+        run: |
+          find problems -type f -name '*.test.js' -exec node {} +
+
+      - name: Set up Java (for Java tests)
+        if: steps.java-changes.outputs.any_changed == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Run Java Tests
+        if: steps.java-changes.outputs.any_changed == 'true'
+        id: test_java
+        run: |
+            for file in ${{ steps.java-changes.outputs.all_changed_files }}; do
+              dir=$(dirname "$file")
+              test_dir="$dir/__tests__"
+              if [ -d "$test_dir" ]; then
+                echo "Found test directory: $test_dir"
+                for test_file in "$test_dir"/Test*.java; do
+                  if [ -f "$test_file" ]; then
+                    echo "Running test: $test_file"
+                    javac "$test_file"
+        
+                    root_dir=$(git rev-parse --show-toplevel)
+                    relative_path="${test_file#$root_dir/}"
+                    class_name="${relative_path%.java}"
+                    fqcn="${class_name//\//.}"
+        
+                    echo "Fully qualified class: $fqcn"
+                    java -cp "$root_dir" "$fqcn"
+                  fi
+                done
+              else
+                echo "⚠️ No __tests__ directory found in $dir"
+              fi
+            done
+        
+      - name: Run C++ Tests
+        if: steps.cpp-changes.outputs.any_changed == 'true'
+        id: test_cpp
+        run: |
+          for file in ${{ steps.cpp-changes.outputs.all_changed_files }}; do
+            dir=$(dirname "$file")
+            test_dir="$dir/__tests__"
+            if [ -d "$test_dir" ]; then
+              echo "Found test directory: $test_dir"
+              for test_file in "$test_dir"/*.cpp; do
+                if [ -f "$test_file" ]; then
+                  echo "Running test: $test_file"
+                  g++ "$test_file" -o test && ./test
+                fi
+              done
+            else
+              echo "⚠️ No __tests__ directory found in $dir"
+              fi
+          done
+
+      - name: Run C Tests
+        if: steps.c-changes.outputs.any_changed == 'true'
+        id: test_c
+        run: |
+          for file in ${{ steps.c-changes.outputs.all_changed_files }}; do
+            dir=$(dirname "$file")
+            test_dir="$dir/__tests__"
+            if [ -d "$test_dir" ]; then
+              echo "Found test directory: $test_dir"
+              for test_file in "$test_dir"/*.c; do
+                if [ -f "$test_file" ]; then
+                  echo "Running test: $test_file"
+                  gcc "$test_file" -o test && ./test
+                fi
+              done
+            else
+              echo "⚠️ No __tests__ directory found in $dir"
+            fi
+          done
+
       - name: Determine Points
         id: points
         run: |
-          TOTAL=0
-          echo "| Challenge | Points |" > new_points.md
-          echo "|:----------|-------:|" >> new_points.md
-
+          POINTS=0
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            CHALLENGE=$(basename "$file")
             if [[ "$file" == problems/easy/* ]]; then
-              POINTS=10
+              POINTS=$((POINTS + 10))
             elif [[ "$file" == problems/intermediate/* ]]; then
-              POINTS=20
+              POINTS=$((POINTS + 20))
             elif [[ "$file" == problems/hard/* ]]; then
-              POINTS=30
-            else
-              POINTS=0
+              POINTS=$((POINTS + 30))
             fi
-            TOTAL=$((TOTAL + POINTS))
-            echo "| $CHALLENGE | $POINTS |" >> new_points.md
           done
+          echo "POINTS=$POINTS" >> $GITHUB_ENV
 
-          echo "" >> new_points.md
-          echo "| **Total** | **$TOTAL** |" >> new_points.md
-          echo "TOTAL_POINTS=$TOTAL" >> $GITHUB_ENV
+      - name: Post test result as a PR comment
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+
+            const results = {
+              Python: '${{ steps.test_python.outcome || 'skipped' }}',
+              JavaScript: '${{ steps.test_js.outcome || 'skipped' }}',
+              Java: '${{ steps.test_java.outcome || 'skipped' }}',
+              'C++': '${{ steps.test_cpp.outcome || 'skipped' }}',
+              C: '${{ steps.test_c.outcome || 'skipped' }}'
+            };
+
+            const symbols = {
+              success: '✅',
+              failure: '❌',
+              skipped: '⚪'
+            };
+
+            const comment = Object.entries(results)
+              .map(([lang, result]) => `${symbols[result] || '❔'} ${lang} tests: **${result.toUpperCase()}**`)
+              .join('\n');
+
+            const points = process.env.POINTS || '0';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: `### 🧪 Test Summary\n${comment}\n\n🏅 **Total Points Earned:** ${points}`
+            });
 
       - name: Append to team_points.md
         run: |
+          AUTHOR=$(git log -1 --pretty=format:'%an')
           DATE=$(date +'%Y-%m-%d %H:%M:%S')
+          CHALLENGE_NAME="${{ github.event.pull_request.title }}"
+
+          # Append points and challenge to the markdown file
           {
             echo "### $AUTHOR - $DATE"
-            cat new_points.md
+            echo "| **Challenge** | **$CHALLENGE_NAME** |"
+            echo "| **Total Points** | **$POINTS** |"
             echo ""
           } >> team_points.md
 
       - name: Commit team points update
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          G/H_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout main
           git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
           git add team_points.md
-          git commit -m "Update team points for $AUTHOR"
-          git push
+          git commit -m "Update team points for $AUTHOR (POINTS=$POINTS)" || echo "No changes to commit"
+          git push || echo "Nothing to push"
