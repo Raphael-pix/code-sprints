@@ -10,13 +10,19 @@
  */
 
 char* morganAndString(const char* a, const char* b) {
-    // Allocate enough space for combined string + 1 for null terminator
-    size_t lenA = strlen(a);
-    size_t lenB = strlen(b);
+    int lenA = strlen(a), lenB = strlen(b);
     char* result = (char*)malloc(lenA + lenB + 1);
-    if (!result) return NULL;
+    int i = 0, j = 0, k = 0;
 
-    // Write your code here — currently returns empty string
-    result[0] = '\0';
+    while (i < lenA && j < lenB) {
+        if (strcmp(a + i, b + j) <= 0) {
+            result[k++] = a[i++];
+        } else {
+            result[k++] = b[j++];
+        }
+    }
+    while (i < lenA) result[k++] = a[i++];
+    while (j < lenB) result[k++] = b[j++];
+    result[k] = '\0';
     return result;
 }
