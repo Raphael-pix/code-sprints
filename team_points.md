@@ -86,3 +86,7 @@
 | **Challenge** | **Update ClimbingLeaderboard.java** |
 | **Total Points** | **20** |
 
+### Raphael Kaira - 2025-05-07 17:28:28
+| **Challenge** | **Update ema_supercomputer.py** |
+| **Total Points** | **20** |
+
