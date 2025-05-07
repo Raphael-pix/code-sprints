@@ -1,4 +1,12 @@
 
 def climbingLeaderboard(ranked, player):
-    # Write your code here
-    return []
+    unique_ranked = sorted(set(ranked), reverse=True)
+    result = []
+    n = len(unique_ranked)
+    i = n - 1
+
+    for score in player:
+        while i >= 0 and score >= unique_ranked[i]:
+            i -= 1
+        result.append(i + 2)  # +2 because ranks are 1-based and we went 1 extra back
+    return result
