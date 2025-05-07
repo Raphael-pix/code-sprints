@@ -58,3 +58,7 @@
 | **Challenge** | **Update programmer_day.c** |
 | **Total Points** | **10** |
 
+### Raphael Kaira - 2025-05-07 16:42:39
+| **Challenge** | **Update programmer_day.cpp** |
+| **Total Points** | **10** |
+
