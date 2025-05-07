@@ -118,3 +118,7 @@
 | **Challenge** | **Update organizing_container.js** |
 | **Total Points** | **20** |
 
+### Raphael Kaira - 2025-05-07 19:34:44
+| **Challenge** | **Update organizing_container.cpp** |
+| **Total Points** | **20** |
+
