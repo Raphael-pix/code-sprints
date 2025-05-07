@@ -1,4 +1,6 @@
+#include <iostream>
 #include <string>
+using namespace std;
 
 /**
  * Finds the lexicographically minimal string by merging two stacks of letters.
@@ -9,6 +11,16 @@
  */
 
 std::string morganAndString(std::string a, std::string b) {
-    // Write your code here
-    return "";
+    string result;
+    int i = 0, j = 0;
+    while (i < a.size() && j < b.size()) {
+        if (a.substr(i) <= b.substr(j)) {
+            result += a[i++];
+        } else {
+            result += b[j++];
+        }
+    }
+    result += a.substr(i);
+    result += b.substr(j);
+    return result;
 }
