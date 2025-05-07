@@ -82,3 +82,7 @@
 | **Challenge** | **Update climbing_leaderboard.cpp** |
 | **Total Points** | **20** |
 
+### Raphael Kaira - 2025-05-07 17:09:51
+| **Challenge** | **Update ClimbingLeaderboard.java** |
+| **Total Points** | **20** |
+
