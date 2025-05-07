@@ -172,53 +172,29 @@ jobs:
           done
           echo "POINTS=$POINTS" >> $GITHUB_ENV
 
-      - name: Post test result as a PR comment
-        if: always()
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const prNumber = context.payload.pull_request.number;
-
-            const results = {
-              Python: '${{ steps.test_python.outcome || 'skipped' }}',
-              JavaScript: '${{ steps.test_js.outcome || 'skipped' }}',
-              Java: '${{ steps.test_java.outcome || 'skipped' }}',
-              'C++': '${{ steps.test_cpp.outcome || 'skipped' }}',
-              C: '${{ steps.test_c.outcome || 'skipped' }}'
-            };
-
-            const symbols = {
-              success: '✅',
-              failure: '❌',
-              skipped: '⚪'
-            };
-
-            const comment = Object.entries(results)
-              .map(([lang, result]) => `${symbols[result] || '❔'} ${lang} tests: **${result.toUpperCase()}**`)
-              .join('\n');
-
-            const points = process.env.POINTS || '0';
-
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body: `### 🧪 Test Summary\n${comment}\n\n🏅 **Total Points Earned:** ${points}`
-            });
-
+      
       - name: Append to team_points.md
         run: |
-          AUTHOR=$(git log -1 --pretty=format:'%an')
-          DATE=$(date +'%Y-%m-%d %H:%M:%S')
-          CHALLENGE_NAME="${{ github.event.pull_request.title }}"
-
-          # Append points and challenge to the markdown file
-          {
-            echo "### $AUTHOR - $DATE"
-            echo "| **Challenge** | **$CHALLENGE_NAME** |"
-            echo "| **Total Points** | **$POINTS** |"
-            echo ""
-          } >> team_points.md
+              AUTHOR=$(git log -1 --pretty=format:'%an')
+              DATE=$(date +'%Y-%m-%d %H:%M:%S')
+              
+              # Get the first changed file in the last commit
+              CHANGED_FILE=$(git diff --name-only HEAD~1 HEAD | head -n 1)
+              CHALLENGE_NAME=$(basename "$CHANGED_FILE")
+              
+              # If no file is found (e.g., empty commit), fallback
+              if [ -z "$CHALLENGE_NAME" ]; then
+                CHALLENGE_NAME="Unknown Challenge"
+              fi
+          
+              # Append points and challenge to the markdown file
+              {
+                echo "### $AUTHOR - $DATE"
+                echo "| **Challenge** | **$CHALLENGE_NAME** |"
+                echo "| **Total Points** | **$POINTS** |"
+                echo ""
+              } >> team_points.md
+          
 
       - name: Commit team points update
         env:
