@@ -26,3 +26,7 @@
 | **Challenge** | **Update grading_students.cpp** |
 | **Total Points** | **10** |
 
+### Raphael Kaira - 2025-05-07 11:12:00
+| **Challenge** | **Update angry_professor.py** |
+| **Total Points** | **10** |
+
