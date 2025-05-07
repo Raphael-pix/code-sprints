@@ -74,3 +74,7 @@
 | **Challenge** | **Update climbing_leaderboard.js** |
 | **Total Points** | **20** |
 
+### Raphael Kaira - 2025-05-07 17:03:23
+| **Challenge** | **Update climbing_leaderboard.c** |
+| **Total Points** | **20** |
+
