@@ -6,8 +6,8 @@
  */
 
 function angryProfessor(k, a) {
-    // Write your code here
-    return "YES";
+   const onTimeStudents = a.filter(time => time <= 0).length;
+    return onTimeStudents < k ? "YES" : "NO";
 }
 
 module.exports = { angryProfessor };
