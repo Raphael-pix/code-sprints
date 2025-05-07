@@ -111,21 +111,21 @@ jobs:
         if: steps.cpp-changes.outputs.any_changed == 'true'
         id: test_cpp
         run: |
-            for file in ${{ steps.cpp-changes.outputs.all_changed_files }}; do
-              dir=$(dirname "$file")
-              test_dir="$dir/__tests__"
-              if [ -d "$test_dir" ]; then
-                echo "Found test directory: $test_dir"
-                for test_file in "$test_dir"/*.cpp; do
-                  if [ -f "$test_file" ]; then
-                    echo "Running test: $test_file"
-                    g++ "$test_file" -o test && ./test
-                  fi
-                done
-              else
-                echo "⚠️ No __tests__ directory found in $dir"
+          for file in ${{ steps.cpp-changes.outputs.all_changed_files }}; do
+            dir=$(dirname "$file")
+            test_dir="$dir/__tests__"
+            if [ -d "$test_dir" ]; then
+              echo "Found test directory: $test_dir"
+              for test_file in "$test_dir"/*.cpp; do
+                if [ -f "$test_file" ]; then
+                  echo "Running test: $test_file"
+                  g++ "$test_file" -o test && ./test
                 fi
-            done
+              done
+            else
+              echo "⚠️ No __tests__ directory found in $dir"
+              fi
+          done
 
       - name: Run C Tests
         if: steps.c-changes.outputs.any_changed == 'true'
@@ -198,26 +198,26 @@ jobs:
 
       - name: Append to team_points.md
         run: |
-              AUTHOR=$(git log -1 --pretty=format:'%an')
-              DATE=$(date +'%Y-%m-%d %H:%M:%S')
-              CHALLENGE_NAME="${{ github.event.pull_request.title }}"
-              
-              # Append points and challenge to the markdown file
-              {
-                echo "### $AUTHOR - $DATE"
-                echo "| **Challenge** | **$CHALLENGE_NAME** |"
-                echo "| **Total Points** | **$POINTS** |"
-                echo ""
-              } >> team_points.md
-    
+          AUTHOR=$(git log -1 --pretty=format:'%an')
+          DATE=$(date +'%Y-%m-%d %H:%M:%S')
+          CHALLENGE_NAME="${{ github.event.pull_request.title }}"
+
+          # Append points and challenge to the markdown file
+          {
+            echo "### $AUTHOR - $DATE"
+            echo "| **Challenge** | **$CHALLENGE_NAME** |"
+            echo "| **Total Points** | **$POINTS** |"
+            echo ""
+          } >> team_points.md
+
       - name: Commit team points update
         env:
           G/H_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-              git config --global user.name "github-actions[bot]"
-              git config --global user.email "github-actions[bot]@users.noreply.github.com"
-              git checkout main
-              git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
-              git add team_points.md
-              git commit -m "Update team points for $AUTHOR (POINTS=$POINTS)" || echo "No changes to commit"
-              git push || echo "Nothing to push"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout main
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}
+          git add team_points.md
+          git commit -m "Update team points for $AUTHOR (POINTS=$POINTS)" || echo "No changes to commit"
+          git push || echo "Nothing to push"
