@@ -130,3 +130,7 @@
 | **Challenge** | **Update organizing_container.c** |
 | **Total Points** | **20** |
 
+### Raphael Kaira - 2025-05-07 19:49:48
+| **Challenge** | **Update morgan_string.py** |
+| **Total Points** | **30** |
+
