@@ -110,3 +110,7 @@
 | **Challenge** | **Update EmaSupercomputer.java** |
 | **Total Points** | **20** |
 
+### Raphael Kaira - 2025-05-07 19:26:51
+| **Challenge** | **Update organizing_container.py** |
+| **Total Points** | **20** |
+
