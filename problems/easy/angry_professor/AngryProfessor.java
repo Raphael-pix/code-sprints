@@ -10,7 +10,12 @@ public class AngryProfessor {
      * @return "YES" if class is cancelled, "NO" otherwise
      */
     public static String angryProfessor(int k, List<Integer> a) {
-        // Write your code here
-        return "YES";
+        int onTime = 0;
+        for (int time : a) {
+            if (time <= 0) {
+                onTime++;
+            }
+        }
+        return (onTime < k) ? "YES" : "NO";
     }
 }
