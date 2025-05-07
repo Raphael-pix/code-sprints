@@ -1,8 +1,8 @@
 package problems.easy.sum_two;
 
-public class sum_two_numbers {
+public class SumTwoNumbers {
 
-    public static int sum_two(int a, int b) {
+    public static int sumTwoNumbers(int a, int b) {
         // write your code here
         return 0;
     }
