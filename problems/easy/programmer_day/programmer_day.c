@@ -8,8 +8,16 @@
  */
 
 char *dayOfProgrammer(int year){
-    // Write your code here
-    char *result = (char *)malloc(20);
-    sprintf(result, "12.09.%d", year);
-    return result;
+     char* date = (char*)malloc(15);  // Allocate space for dd.mm.yyyy + null terminator
+
+    if (year == 1918) {
+        sprintf(date, "26.09.%d", year);
+    } else if ((year >= 1700 && year <= 1917 && year % 4 == 0) ||
+               (year >= 1919 && (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)))) {
+        sprintf(date, "12.09.%d", year);
+    } else {
+        sprintf(date, "13.09.%d", year);
+    }
+
+    return date;
 }
