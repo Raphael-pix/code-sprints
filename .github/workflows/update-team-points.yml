@@ -1,9 +1,11 @@
-name: Validate Solutions
+name: Update team points
 
 on:
   push:
     branches:
       - main
+    paths:
+      - "problems/**"
 
 jobs:
   detect-and-test:
