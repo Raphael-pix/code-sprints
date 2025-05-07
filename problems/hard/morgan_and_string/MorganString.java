@@ -9,7 +9,18 @@ public class MorganString {
      * @return the minimal string
      */
     public static String morganAndString(String a, String b) {
-        // Write your code here
-        return "";
+        StringBuilder result = new StringBuilder();
+        int i = 0, j = 0;
+        int n = a.length(), m = b.length();
+        while (i < n && j < m) {
+            if (a.substring(i).compareTo(b.substring(j)) <= 0) {
+                result.append(a.charAt(i++));
+            } else {
+                result.append(b.charAt(j++));
+            }
+        }
+        result.append(a.substring(i));
+        result.append(b.substring(j));
+        return result.toString();
     }
 }
