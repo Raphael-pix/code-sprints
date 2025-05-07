@@ -154,3 +154,7 @@
 | **Challenge** | **Update build_a_string.py** |
 | **Total Points** | **30** |
 
+### Raphael Kaira - 2025-05-07 21:11:40
+| **Challenge** | **sum_two_numbers.c** |
+| **Total Points** | **10** |
+
