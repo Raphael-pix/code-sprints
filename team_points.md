@@ -146,3 +146,7 @@
 | **Challenge** | **Update morgan_string.cpp** |
 | **Total Points** | **30** |
 
+### Raphael Kaira - 2025-05-07 19:56:54
+| **Challenge** | **Update MorganString.java** |
+| **Total Points** | **30** |
+
