@@ -66,3 +66,23 @@
 | **Challenge** | **Update ProgrammerDay.java** |
 | **Total Points** | **10** |
 
+### Raphael Kaira - 2025-05-07 16:54:31
+| **Challenge** | **Update climbing_leaderboard.py** |
+| **Total Points** | **20** |
+
+### Raphael Kaira - 2025-05-07 16:56:50
+| **Challenge** | **Update climbing_leaderboard.js** |
+| **Total Points** | **20** |
+
+### Raphael Kaira - 2025-05-07 17:03:23
+| **Challenge** | **Update climbing_leaderboard.c** |
+| **Total Points** | **20** |
+
+### Raphael Kaira - 2025-05-07 17:05:54
+| **Challenge** | **Update climbing_leaderboard.cpp** |
+| **Total Points** | **20** |
+
+### Raphael Kaira - 2025-05-07 17:09:51
+| **Challenge** | **Update ClimbingLeaderboard.java** |
+| **Total Points** | **20** |
+
