@@ -8,6 +8,7 @@ public class EmaSupercomputer {
     * @return maximum product of areas of two pluses
     */
     public static int twoPluses(String[] grid) {
+        // Write your code here
         return 0;
     }
 }
