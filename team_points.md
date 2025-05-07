@@ -14,3 +14,7 @@
 | **Challenge** | **Update grading_students.py** |
 | **Total Points** | **10** |
 
+### Raphael Kaira - 2025-05-07 11:01:26
+| **Challenge** | **Update GradingStudents.java** |
+| **Total Points** | **10** |
+
