@@ -15,38 +15,38 @@ jobs:
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@v46
         with:
           files: |
             problems/**
 
       - name: Get changed Python files
         id: python-changes
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@v46
         with:
           files: "**/*.py"
 
       - name: Get changed JavaScript files
         id: js-changes
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@v46
         with:
           files: "**/*.js"
 
       - name: Get changed Java files
         id: java-changes
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@v46
         with:
           files: "**/*.java"
 
       - name: Get changed C++ files
         id: cpp-changes
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@v46
         with:
           files: "**/*.cpp"
 
       - name: Get changed C files
         id: c-changes
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@v46
         with:
           files: "**/*.c"
 
