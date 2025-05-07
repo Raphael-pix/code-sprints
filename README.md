@@ -14,9 +14,9 @@
 
 ---
 
-## 👋 Welcome to the Code Sprint!
+## 👋 Welcome to the Code Sprints!
 
-The **Code Sprint Challenge** is a dynamic event where developers solve exciting programming problems, boost their coding skills, and compete for top scores!
+The **Code Sprints Challenge** is a dynamic event where developers solve exciting programming problems, boost their coding skills, and compete for top scores!
 
 Whether you're a **beginner looking to grow** or an **experienced coder wanting a challenge**, this sprint is packed with **problem-solving tasks** across different skill levels.
 
