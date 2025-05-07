@@ -158,3 +158,7 @@
 | **Challenge** | **sum_two_numbers.c** |
 | **Total Points** | **10** |
 
+### RaphaelKaira - 2025-05-07 21:20:05
+| **Challenge** | **README.md** |
+| **Total Points** | **10** |
+
