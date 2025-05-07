@@ -10,6 +10,11 @@
  */
 
 char* angryProfessor(int k, int* a, int n) {
-    // Write your code here
-    return "YES";
+     int onTime = 0;
+    for (int i = 0; i < n; i++) {
+        if (a[i] <= 0) {
+            onTime++;
+        }
+    }
+    return (onTime < k) ? "YES" : "NO";
 }
