@@ -8,8 +8,10 @@
  */
 
 char *dayOfProgrammer(int year){
-    // Write your code here
     char *result = (char *)malloc(20);
+
+     // Write your code here
+     
     sprintf(result, "12.09.%d", year);
     return result;
 }
