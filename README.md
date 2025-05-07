@@ -61,7 +61,7 @@ Want to join the sprint? Just follow these simple steps:
 2️⃣ **Choose a challenge:**
 
 - Pick a challenge from the list above that you want to solve.
-- Review the problem statement in its folder.
+- Review the problem statement in its folder's README.
 
 3️⃣ **Create a new branch:**
 
@@ -72,21 +72,62 @@ git checkout -b solve-[challenge-name]
 # Example: git checkout -b solve-build-a-string
 ```
 
+4️⃣ Solve the challenge:
+
+Write your solution in the correct file (e.g., build_a_string.js or build_a_string.py).
+
+Ensure your code:
+
+- ✅ Passes all provided test cases.
+
+- ✅ Follows clean coding best practices.
+
+- ✅ Includes helpful comments/documentation if needed.
+
+5️⃣ Run and pass all tests:
+
+Make sure your solution passes all automated tests before submitting.
+
+6️⃣ Commit & push your changes:
+
+```bash
+
+git add .
+git commit -m "Solved: [Challenge Title]"
+git push origin solve-[challenge-name]
+```
+
+7️⃣ Create a Pull Request (PR):
+
+Go to your fork on GitHub.
+
+You’ll see a prompt to create a pull request—click it.
+
+In the PR description, mention:
+
+- The challenge you solved.
+
+- Any special notes or improvements.
+
+✅ Once reviewed, your PR will be merged to main, and your points will be logged automatically.
+
+
+
 ## 📜 Rules
 
-🚫 Minimum use of AI tools:
+- 🚫 Minimum use of AI tools:
 We encourage you to think independently. While AI (like ChatGPT/Copilot) can assist, do not copy-paste solutions blindly—points may be revoked if violations are found.
 
-🕓 Deadline:
+- 🕓 Deadline:
 All challenge solutions must be submitted by 4:00 PM. ⏰ Late submissions will not be accepted.
 
-🤝 Be respectful & fair:
+- 🤝 Be respectful & fair:
 
-No plagiarism.
+- No plagiarism.
 
-Help others, but don't give away full solutions.
+- Help others, but don't give away full solutions.
 
-👩‍💻 Test Coverage:
+- 👩‍💻 Test Coverage:
 Your solution must pass all test cases provided in each challenge folder.
 
 ## 🏆 How to Win
