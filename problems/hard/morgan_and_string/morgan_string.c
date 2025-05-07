@@ -11,5 +11,5 @@
 
 char* morganAndString(const char* a, const char* b) {
     // Write your code here
-    return "a";
+    return "";
 }
