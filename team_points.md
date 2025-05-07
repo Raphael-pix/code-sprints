@@ -102,3 +102,7 @@
 | **Challenge** | **Update ema_supercomputer.c** |
 | **Total Points** | **20** |
 
+### Raphael Kaira - 2025-05-07 19:09:13
+| **Challenge** | **Update ema_supercomputer.cpp** |
+| **Total Points** | **20** |
+
