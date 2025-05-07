@@ -22,3 +22,7 @@
 | **Challenge** | **Update grading_students.c** |
 | **Total Points** | **10** |
 
+### Raphael Kaira - 2025-05-07 11:05:32
+| **Challenge** | **Update grading_students.cpp** |
+| **Total Points** | **10** |
+
