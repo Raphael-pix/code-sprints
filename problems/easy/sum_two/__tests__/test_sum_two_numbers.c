@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
-
-int sum_two(int a, int b);
+#include "../sum_two_numbers.c"
 
 int main() {
     // Test 1

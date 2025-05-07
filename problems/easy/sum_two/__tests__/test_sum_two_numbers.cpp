@@ -1,7 +1,6 @@
 #include <cassert>
 #include <iostream>
-
-int sum_two(int a, int b);
+#include "../sum_two_numbers.cpp"
 
 int main() {
     // Test 1
