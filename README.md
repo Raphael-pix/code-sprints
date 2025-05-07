@@ -38,15 +38,19 @@ You’ll tackle a variety of **problem-solving challenges** divided into 3 diffi
 
 ## 🗂️ List of Challenges
 
-| 🏷️ **Challenge Title**                                      | ⚡ **Difficulty** |
-|-------------------------------------------------------------|------------------|
-| [Build a String](./build_a_string)                           | 🟡 Intermediate   |
-| [Morgan and String](./morgan_and_string)                     | 🟡 Intermediate   |
-| [Organizing Containers](./organizing_containers)             | 🔴 Hard           |
-| [Determining DNA Health](./determining_dna_health)           | 🔴 Hard           |
-| [Simple Array Sum](./simple_array_sum)                       | 🟢 Easy           |
-| [FizzBuzz](./fizzbuzz)                                       | 🟢 Easy           |
-| <!-- Add more challenges here -->                             |                  |
+| 🏷️ **Challenge Title**                                                              | ⚡ **Difficulty** |
+|-------------------------------------------------------------------------------------|------------------|
+| [Angry Professor](./problems/easy/angry_professor)                                  | 🟢 Easy           |
+| [Grading Students](./problems/easy/grading_students)                                | 🟢 Easy           |
+| [Day of the Programmer](./problems/easy/programmer_day)                             | 🟢 Easy           |
+| [Sum Two Numbers](./problems/easy/sum_two)                                          | 🟢 Easy           |
+| [Climbing Leaderboard](./problems/intermediate/climbing_leaderboard)                | 🟡 Intermediate   |
+| [Ema's Supercomputer](./problems/intermediate/ema_supercomputer)                    | 🟡 Intermediate   |
+| [Organizing Balls in a Container](./problems/intermediate/organizing_container)     | 🟡 Intermediate   |
+| [Build a String](./problems/hard/build_a_string)                                    | 🔴 Hard           |
+| [Morgan and String](./problems/hard/morgan_and_string)                              | 🔴 Hard           |
+| <!-- Add more challenges here -->                                                   |                  |
+
 
 ---
 
