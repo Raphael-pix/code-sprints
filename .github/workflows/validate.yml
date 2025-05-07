@@ -91,22 +91,30 @@ jobs:
         if: steps.java-changes.outputs.any_changed == 'true'
         id: test_java
         run: |
-          for file in ${{ steps.java-changes.outputs.all_changed_files }}; do
-            dir=$(dirname "$file")
-            test_dir="$dir/__tests__"
-            if [ -d "$test_dir" ]; then
-              echo "Found test directory: $test_dir"
-              for test_file in "$test_dir"/Test*.java; do
-                if [ -f "$test_file" ]; then
-                  echo "Running test: $test_file"
-                  javac "$test_file" && java -cp "$test_dir" "$(basename "$test_file" .java)"
-                fi
-              done
-            else
-              echo "⚠️ No __tests__ directory found in $dir"
-            fi
-          done
-
+            for file in ${{ steps.java-changes.outputs.all_changed_files }}; do
+              dir=$(dirname "$file")
+              test_dir="$dir/__tests__"
+              if [ -d "$test_dir" ]; then
+                echo "Found test directory: $test_dir"
+                for test_file in "$test_dir"/Test*.java; do
+                  if [ -f "$test_file" ]; then
+                    echo "Running test: $test_file"
+                    javac "$test_file"
+        
+                    root_dir=$(git rev-parse --show-toplevel)
+                    relative_path="${test_file#$root_dir/}"
+                    class_name="${relative_path%.java}"
+                    fqcn="${class_name//\//.}"
+        
+                    echo "Fully qualified class: $fqcn"
+                    java -cp "$root_dir" "$fqcn"
+                  fi
+                done
+              else
+                echo "⚠️ No __tests__ directory found in $dir"
+              fi
+            done
+        
       - name: Run C++ Tests
         if: steps.cpp-changes.outputs.any_changed == 'true'
         id: test_cpp
