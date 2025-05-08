@@ -8,10 +8,3 @@ int steadyGene(string gene) {
     return 0;
 }
 
-int main() {
-    string gene;
-    cout << "Enter gene: ";
-    cin >> gene;
-    cout << steadyGene(gene) << endl;
-    return 0;
-}
