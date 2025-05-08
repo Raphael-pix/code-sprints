@@ -170,3 +170,7 @@
 | **Challenge** | **README.md** |
 | **Total Points** | **30** |
 
+### RaphaelKaira - 2025-05-08 19:00:19
+| **Challenge** | **team_points.md** |
+| **Total Points** | **30** |
+
