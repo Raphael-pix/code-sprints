@@ -40,12 +40,3 @@ int steadyGene(char* gene) {
     }
     return minLen;
 }
-
-int main() {
-    // Example usage:
-    char gene[MAX_LEN];
-    scanf("%s", gene);
-    int result = steadyGene(gene);
-    printf("%d\n", result);
-    return 0;
-}
