@@ -1,4 +1,4 @@
-const steadyGene = require('./bear_and_gene');
+const steadyGene = require('../bear_and_gene');
 const assert = require('assert');
 
 describe('Bear and Steady Gene Tests', function() {
