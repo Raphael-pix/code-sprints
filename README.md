@@ -49,6 +49,7 @@ You’ll tackle a variety of **problem-solving challenges** divided into 3 diffi
 | [Organizing Balls in a Container](./problems/intermediate/organizing_container)     | 🟡 Intermediate   |
 | [Build a String](./problems/hard/build_a_string)                                    | 🔴 Hard           |
 | [Morgan and String](./problems/hard/morgan_and_string)                              | 🔴 Hard           |
+| [Bear and steady gene](./problems/hard/bear_and_gene)                               | 🔴 Hard           |
 | <!-- Add more challenges here -->                                                   |                  |
 
 
