@@ -22,7 +22,7 @@ It should return an integer that represents the length of the smallest substring
 ### Example
 
 ```
-**Example 1:**
+Example 1:
 Input: GAAATAAA
 Output: 5
 ```
