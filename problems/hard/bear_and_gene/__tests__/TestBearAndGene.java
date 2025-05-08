@@ -8,7 +8,7 @@ public class TestBearAndGene {
         test("GACT", 0);
         test("AAAACCCCGGGGTTTT", 0);
         test("AAGTGCCT", 0);
-        test("AAAAACCCGGTT", 4);
+        test("AAAAACCCGGTT", 2);
     }
 
     private static void test(String gene, int expected) {

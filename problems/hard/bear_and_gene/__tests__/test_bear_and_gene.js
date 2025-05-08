@@ -19,6 +19,6 @@ describe('Bear and Steady Gene Tests', function() {
     });
 
     it('Edge case', function() {
-        assert.strictEqual(steadyGene('AAAAACCCGGTT'), 4);
+        assert.strictEqual(steadyGene('AAAAACCCGGTT'), 2);
     });
 });

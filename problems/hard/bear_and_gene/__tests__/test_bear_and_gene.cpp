@@ -8,7 +8,7 @@ void test() {
     assert(steadyGene("GACT") == 0);
     assert(steadyGene("AAAACCCCGGGGTTTT") == 0);
     assert(steadyGene("AAGTGCCT") == 0);
-    assert(steadyGene("AAAAACCCGGTT") == 4);
+    assert(steadyGene("AAAAACCCGGTT") == 2);
     cout << "All test cases passed!" << endl;
 }
 

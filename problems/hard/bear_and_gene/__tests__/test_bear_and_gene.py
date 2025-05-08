@@ -25,7 +25,7 @@ class TestSteadyGene(unittest.TestCase):
 
     def test_edge_case(self):
         gene = "AAAAACCCGGTT"
-        self.assertEqual(steadyGene(gene), 4)
+        self.assertEqual(steadyGene(gene), 2)
 
 if __name__ == '__main__':
     unittest.main()
