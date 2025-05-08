@@ -186,3 +186,7 @@
 | **Challenge** | **test_bear_and_gene.js** |
 | **Total Points** | **30** |
 
+### RaphaelKaira - 2025-05-08 20:08:24
+| **Challenge** | **team_points.md** |
+| **Total Points** | **30** |
+
