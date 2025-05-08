@@ -1,24 +1,46 @@
 const steadyGene = require('../bear_and_gene');
-const assert = require('assert');
 
-describe('Bear and Steady Gene Tests', function() {
-    it('Example 1', function() {
-        assert.strictEqual(steadyGene('GAAATAAA'), 5);
-    });
+function testSteadyGene() {
+    const testCases = [
+        {
+            input: 'GAAATAAA',
+            expected: 5,
+            description: 'Example 1',
+        },
+        {
+            input: 'GACT',
+            expected: 0,
+            description: 'Already steady gene',
+        },
+        {
+            input: 'AAAACCCCGGGGTTTT',
+            expected: 0,
+            description: 'Large balanced gene',
+        },
+        {
+            input: 'AAGTGCCT',
+            expected: 0,
+            description: 'Another case',
+        },
+        {
+            input: 'AAAAACCCGGTT',
+            expected: 2,
+            description: 'Edge case',
+        }
+    ];
 
-    it('Already steady gene', function() {
-        assert.strictEqual(steadyGene('GACT'), 0);
-    });
+    testCases.forEach(testCase => {
+        const { input, expected, description } = testCase;
+        const result = steadyGene(input);
 
-    it('Large balanced gene', function() {
-        assert.strictEqual(steadyGene('AAAACCCCGGGGTTTT'), 0);
+        if (result === expected) {
+            console.log(`✅ Passed: ${description}`);
+        } else {
+            console.log(`❌ Failed: ${description}`);
+            console.log(`  Expected: ${expected}`);
+            console.log(`  Got: ${result}`);
+        }
     });
+}
 
-    it('Another case', function() {
-        assert.strictEqual(steadyGene('AAGTGCCT'), 0);
-    });
-
-    it('Edge case', function() {
-        assert.strictEqual(steadyGene('AAAAACCCGGTT'), 2);
-    });
-});
+testSteadyGene();

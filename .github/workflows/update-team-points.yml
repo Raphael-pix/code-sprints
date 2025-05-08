@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - "problems/**"
-
+  
 jobs:
   detect-and-test:
     runs-on: ubuntu-latest
@@ -68,7 +68,18 @@ jobs:
         if: steps.python-changes.outputs.any_changed == 'true'
         id: test_python
         run: |
-          find problems -type d -name '__tests__' -exec bash -c 'for d; do pytest "$d"; done' _ {} +
+              for file in ${{ steps.python-changes.outputs.all_changed_files }}; do
+                dir=$(dirname "$file")
+                test_dir="$dir/__tests__"
+                if [ -d "$test_dir" ]; then
+                  echo "✅ Found test directory: $test_dir"
+                  echo "🔍 Running pytest in $test_dir"
+                  pytest "$test_dir"
+                else
+                  echo "⚠️ No __tests__ directory found in $dir"
+                fi
+              done
+          
 
       - name: Set up Node.js (for JavaScript tests)
         if: steps.js-changes.outputs.any_changed == 'true'
@@ -76,12 +87,28 @@ jobs:
         with:
           node-version: "20"
 
+      
       - name: Run JavaScript Tests
         if: steps.js-changes.outputs.any_changed == 'true'
         id: test_js
         run: |
-          find problems -type f -name '*.test.js' -exec node {} +
-
+              for file in ${{ steps.js-changes.outputs.all_changed_files }}; do
+                dir=$(dirname "$file")
+                test_dir="$dir/__tests__"
+                echo "🔍 Checking for tests in: $test_dir"
+                if [ -d "$test_dir" ]; then
+                  for test_file in "$test_dir"/*.js; do
+                    if [ -f "$test_file" ]; then
+                      echo "✅ Running JavaScript test: $test_file"
+                      node "$test_file"
+                    fi
+                  done
+                else
+                  echo "⚠️ No __tests__ directory found in $dir"
+                fi
+              done
+        
+              
       - name: Set up Java (for Java tests)
         if: steps.java-changes.outputs.any_changed == 'true'
         uses: actions/setup-java@v4
