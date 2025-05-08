@@ -1,4 +1,4 @@
-# 🚀 Code Sprint Challenge
+# 🚀 Code Sprints Challenge
 
 <p align="center">
   <img src="https://res.cloudinary.com/dzjujqvly/image/upload/v1746654140/logo-lockup-gdg-horizontal_720_vq31ng.png" alt="GDG Logo" width="150"/>
