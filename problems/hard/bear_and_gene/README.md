@@ -32,3 +32,14 @@ Output: 5
 - 4 ≤ *n* ≤ 500,000
 - *n* is divisible by 4
 - gene[i] ∈ [CGAT]
+
+### Where to write your code
+
+Each language has a starter file:
+- `bear_and_gene.py`
+- `bear_and_gene.js`
+- `bear_and_gene.c`
+- `bear_and_gene.cpp`
+- `BearAndGene.java`
+
+Open the file and complete the `steadyGene` function.
